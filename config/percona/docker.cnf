@@ -1,0 +1,84 @@
+[client]
+default-character-set = utf8mb4
+# default_time_zone=UTC
+
+[mysql]
+default-character-set = utf8mb4
+
+[mysqld]
+skip-host-cache
+skip-name-resolve
+
+#
+# Remove leading # and set to the amount of RAM for the most important data
+# cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
+# innodb_buffer_pool_size = 128M
+#
+# Remove leading # to turn on a very important data integrity option: logging
+# changes to the binary log between backups.
+# log_bin
+#
+# Remove leading # to set options mainly useful for reporting servers.
+# The server defaults are faster for transactions and fast SELECTs.
+# Adjust sizes as needed, experiment to find the optimal values.
+# join_buffer_size = 128M
+# sort_buffer_size = 2M
+# read_rnd_buffer_size = 2M
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+pid-file=/var/run/mysqld/mysqld.pid
+explicit_defaults_for_timestamp
+
+# log error
+#log_error = /var/log/mysql/mysql.err
+#log-error = /var/log/mysql/error.log
+
+# Recommended in standard MySQL setup
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES
+# STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ENGINE_SUBSTITUTION
+# ONLY_FULL_GROUP_BY,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+# character
+character-set-client-handshake = FALSE
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+#default-character-set = utf8mb4
+#default-collation = utf8mb4_unicode_ci
+init-connect = 'SET NAMES utf8mb4;'
+
+# timezone
+default_time_zone=+00:00
+
+# slow log
+#slow_query_log       = 1
+#slow_query_log_file  = /var/log/mysql/mysql-slow.log
+long_query_time      = 1
+log-queries-not-using-indexes
+
+# for replication
+#server-id = 1
+
+# log bin (master)
+#log-bin = /var/lib/mysql/server-mysql-bin
+#log-bin-index = /var/lib/mysql/server-mysql-bin.index
+
+# log bin (slave)
+#relay-log = /var/lib/mysql/slave-mysql-relay-bin
+#relay-log-index = /var/lib/mysql/slave-mysql-relay-bin.index
+
+# save log from master to send on slave
+#log-slave-updates
+
+# import big dump
+innodb_data_file_path = ibdata1:30M:autoextend:max:2048M
+
+# tmp table
+tmp_table_size=512M
+max_heap_table_size=512M
+
+# data
+max_allowed_packet=1G
