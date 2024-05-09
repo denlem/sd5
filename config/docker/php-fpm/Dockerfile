@@ -5,6 +5,7 @@ RUN apt-get update;  \
     apt-get install -y --no-install-recommends apt-utils apt-transport-https; \
     apt-get install -y \
     curl \
+    gnupg \
     wget sudo\
     git \
     unzip \
@@ -27,7 +28,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # change /var/www owner to www-data
 RUN chown www-data:www-data -R /var/www;
 
+# Создание пользователя с UID=1000
+RUN useradd -u 1000 user1
+
 # Переключаемся на пользователя www-data
-USER www-data
+# USER www-data
 
 WORKDIR /var/www/symfony
