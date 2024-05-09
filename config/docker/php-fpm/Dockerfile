@@ -19,21 +19,28 @@ RUN apt-get update;  \
 # Устанавливаем расширения PHP, необходимые для Symfony
 RUN docker-php-ext-install intl zip pdo pdo_mysql iconv mbstring sockets
 
-# Устанавливаем Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 # Создаем пользователя www-data и устанавливаем его UID и GID
 #RUN groupadd -g 1000 www-data && useradd -u 1000 -g www-data -s /bin/bash -m www-data
-
-# change /var/www owner to www-data
+#RUN chsh www-data -s /bin/bash
+#RUN mkdir -p /home/www-data/bin
 #RUN chown www-data:www-data -R /var/www;
+#RUN chown www-data:www-data -R /home/www-data;
 
 # Создание пользователя с UID=1000
-RUN groupadd -r user1 -g 1000 && useradd -r -u 1000 -g user1 user1
+RUN groupadd -r appuser -g 1000 && useradd -r -u 1000 -g appuser appuser
 
-RUN chown user1:user1 -R /var/www;
+RUN mkdir -p /home/appuser/bin
 
-USER user1
+RUN chown appuser:appuser -R /var/www;
+RUN chown appuser:appuser -R /home/appuser;
+
+USER appuser
+
+# Устанавливаем Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/home/appuser/bin --filename=composer
+ENV PATH="/home/appuser/bin:${PATH}"
+
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Переключаемся на пользователя www-data
 # USER www-data

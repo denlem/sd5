@@ -23,15 +23,15 @@ services:
     depends_on:
       - db
 
-  php-cli:
-    build:
-      context: config/docker/php-cli
-    volumes:
-      - ./:/var/www/symfony:rw
-    command: sleep 10000
-    container_name: ${PROJECT_NAME}-php-cli
-    depends_on:
-      - php-fpm
+#  php-cli:
+#    build:
+#      context: config/docker/php-cli
+#    volumes:
+#      - ./:/var/www/symfony:rw
+#    command: sleep 10000
+#    container_name: ${PROJECT_NAME}-php-cli
+#    depends_on:
+#      - php-fpm
 
   db:
     image: percona/percona-xtradb-cluster:8.0
