@@ -3,36 +3,42 @@ services:
   nginx:
     container_name: ${PROJECT_NAME}-nginx
     build:
-      context: ./config/nginx
+      context: config/docker/nginx
     volumes:
       - ./:/var/www/symfony:rw
     restart: no
     ports:
       - "8081:80"
+    depends_on:
+      - php-fpm
 
   php-fpm:
     container_name: ${PROJECT_NAME}-php-fpm
     build:
-      context: ./config/php-fpm
+      context: config/docker/php-fpm
     volumes:
       - ./:/var/www/symfony:rw
+      - ./config/docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./config/docker/php-fpm/php.override.ini:/usr/local/etc/php/php.override.ini
     depends_on:
       - db
 
   php-cli:
     build:
-      context: ./config/php-cli
+      context: config/docker/php-cli
     volumes:
       - ./:/var/www/symfony:rw
     command: sleep 10000
     container_name: ${PROJECT_NAME}-php-cli
+    depends_on:
+      - php-fpm
 
   db:
     image: percona/percona-xtradb-cluster:8.0
     container_name: "${PROJECT_NAME}_percona"
     hostname: "${PROJECT_NAME}_percona"
     build:
-      context: ./config/percona
+      context: config/docker/percona
     environment:
       MYSQL_ROOT_PASSWORD: example
     ports:

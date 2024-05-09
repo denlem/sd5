@@ -23,13 +23,17 @@ RUN docker-php-ext-install intl zip pdo pdo_mysql iconv mbstring sockets
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Создаем пользователя www-data и устанавливаем его UID и GID
-# RUN groupadd -g 1000 www-data && useradd -u 1000 -g www-data -s /bin/bash -m www-data
+#RUN groupadd -g 1000 www-data && useradd -u 1000 -g www-data -s /bin/bash -m www-data
 
 # change /var/www owner to www-data
-RUN chown www-data:www-data -R /var/www;
+#RUN chown www-data:www-data -R /var/www;
 
 # Создание пользователя с UID=1000
-RUN useradd -u 1000 user1
+RUN groupadd -r user1 -g 1000 && useradd -r -u 1000 -g user1 user1
+
+RUN chown user1:user1 -R /var/www;
+
+USER user1
 
 # Переключаемся на пользователя www-data
 # USER www-data
