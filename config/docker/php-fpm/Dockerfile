@@ -26,13 +26,22 @@ RUN docker-php-ext-install intl zip pdo pdo_mysql iconv mbstring sockets
 #RUN chown www-data:www-data -R /var/www;
 #RUN chown www-data:www-data -R /home/www-data;
 
+#RUN groupadd -r appuser -g 1000 && useradd -r -u 1000 -g appuser appuser
+
 # Создание пользователя с UID=1000
-RUN groupadd -r appuser -g 1000 && useradd -r -u 1000 -g appuser appuser
+RUN useradd -r -u 1000 -g www-data appuser
 
 RUN mkdir -p /home/appuser/bin
 
-RUN chown appuser:appuser -R /var/www;
-RUN chown appuser:appuser -R /home/appuser;
+RUN chown appuser:www-data -R /var/www;
+RUN chown appuser:www-data -R /home/appuser;
+
+COPY ./config/docker/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+RUN mkdir -p /var/log/symfony
+RUN chmod a+rwx -R /var/log/symfony
+
+RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*;
 
 USER appuser
 
@@ -46,3 +55,10 @@ ENV PATH="/home/appuser/bin:${PATH}"
 # USER www-data
 
 WORKDIR /var/www/symfony
+
+EXPOSE 9000
+
+# The following runs FPM and removes all its extraneous log output on top of what your app outputs to stdout
+#CMD php-fpm -F -O 2>&1 | sed -u 's,.*: \"\(.*\)$,\1,'| sed -u 's,\"$,,' 1>&1
+
+CMD ["php-fpm"]

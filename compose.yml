@@ -2,8 +2,11 @@
 services:
   nginx:
     container_name: ${PROJECT_NAME}-nginx
+    hostname: "${PROJECT_NAME}-nginx"
+    shm_size: '4gb'
     build:
-      context: config/docker/nginx
+      context: ./config/docker/nginx
+      dockerfile: Dockerfile
     volumes:
       - ./:/var/www/symfony:rw
     restart: no
@@ -14,14 +17,40 @@ services:
 
   php-fpm:
     container_name: ${PROJECT_NAME}-php-fpm
+    hostname: "${PROJECT_NAME}-php-fpm"
+    shm_size: '2gb'
     build:
-      context: config/docker/php-fpm
+      context: .
+      dockerfile: config/docker/php-fpm/Dockerfile
     volumes:
       - ./:/var/www/symfony:rw
       - ./config/docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
       - ./config/docker/php-fpm/php.override.ini:/usr/local/etc/php/php.override.ini
     depends_on:
       - db
+
+  keydb:
+    image: eqalpha/keydb
+    container_name: ${PROJECT_NAME}-keydb
+    ports:
+      - "6379:6379"
+    volumes:
+      - data:/data
+    command: ["--requirepass", "yourpassword"]
+    depends_on:
+      - nginx
+
+#  keydb:
+#    image: eqalpha/keydb
+#    container_name: ${PROJECT_NAME}-keydb
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - data:/data
+#    command: keydb-server /etc/keydb/redis.conf --server-threads 2
+#    depends_on:
+#      - nginx
+
 
 #  php-cli:
 #    build:
@@ -56,6 +85,8 @@ networks:
 ########### Volume ###############
 volumes:
   db_myitcareer_percona_v8:
+  data:
+    driver: local
 
 
 #  db:
