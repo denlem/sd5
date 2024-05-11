@@ -13,7 +13,10 @@ RUN apt-get update;  \
     libmcrypt-dev \
     libicu-dev \
     libzip-dev \
-    libssl-dev pkg-config patch libonig-dev \
+    libssl-dev \
+    pkg-config \
+    patch \
+    libonig-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Устанавливаем расширения PHP, необходимые для Symfony
@@ -36,6 +39,9 @@ RUN mkdir -p /home/appuser/bin
 RUN chown appuser:www-data -R /var/www;
 RUN chown appuser:www-data -R /home/appuser;
 
+RUN echo 'root:esportsdev' | chpasswd; \
+    echo 'appuser:esportsdev' | chpasswd;
+
 COPY ./config/docker/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN mkdir -p /var/log/symfony
@@ -50,9 +56,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/home/appu
 ENV PATH="/home/appuser/bin:${PATH}"
 
 # RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Переключаемся на пользователя www-data
-# USER www-data
 
 WORKDIR /var/www/symfony
 

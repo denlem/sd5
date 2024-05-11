@@ -12,6 +12,8 @@ services:
     restart: no
     ports:
       - "8081:80"
+    networks:
+      - esports-network
     depends_on:
       - php-fpm
 
@@ -28,6 +30,8 @@ services:
       - ./config/docker/php-fpm/php.override.ini:/usr/local/etc/php/php.override.ini
     depends_on:
       - db
+    networks:
+      - esports-network
 
   keydb:
     image: eqalpha/keydb
@@ -37,6 +41,8 @@ services:
     volumes:
       - data:/data
     command: ["--requirepass", "yourpassword"]
+    networks:
+      - esports-network
     depends_on:
       - nginx
 
@@ -69,22 +75,30 @@ services:
     build:
       context: config/docker/percona
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     ports:
       - "3306:3306"
     volumes:
-      - db_myitcareer_percona_v8:/var/lib/mysql
+      - db_esports_percona_v8:/var/lib/mysql
     networks:
       - esports-network
 
+  cron:
+    container_name: "${PROJECT_NAME}_cron"
+    restart: ${CONTAINER_RESTART}
+    image: mcuadros/ofelia:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/docker/cron/config.${CLI_ENV}.ini:/etc/ofelia/config.ini
+    networks:
+      - esports-network
 
 networks:
   esports-network:
     driver: bridge
 
-########### Volume ###############
 volumes:
-  db_myitcareer_percona_v8:
+  db_esports_percona_v8:
   data:
     driver: local
 
