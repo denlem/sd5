@@ -42,6 +42,8 @@ RUN chown appuser:www-data -R /home/appuser;
 RUN echo 'root:esportsdev' | chpasswd; \
     echo 'appuser:esportsdev' | chpasswd;
 
+RUN echo "appuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 COPY ./config/docker/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN mkdir -p /var/log/symfony
