@@ -1,28 +1,28 @@
 # Executables (local)
 DOCKER_COMP = docker compose
 
-sh: ## Console
+sh: ## Enter to php console
 	docker exec -it esports_php_fpm bash
 
-shr: ## Console from root
+shr: ## Enter to php console from root
 	docker exec -it -u root esports_php_fpm bash
 
-sh-n: ## Console
+sh-n: ## Enter to nginx console
 	docker exec -it esports_nginx bash
 
-up: ## Console from root
+up: ## Start project
 	docker compose up -d
 
-down: ## Console from root
+down: ## Down containers
 	docker compose down
 
-ccd: ## Console from root
+ccd: ## Clear Docker cache for rebuild
 	yes | docker container prune ; yes | docker image prune ; yes | docker system prune --volumes ; yes | docker builder prune
 
-build b: ## Console from root
+build b: ## Build project with cache
 	docker compose build
 
-buildnc bnc: ## Console from root
+build-nc bnc: ## Build project with no-cache
 	docker compose build --no-cache
 
 logs: ## Show live logs
