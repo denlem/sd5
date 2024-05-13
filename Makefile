@@ -2,10 +2,10 @@
 DOCKER_COMP = docker compose
 
 sh: ## Console
-	docker exec -it esports-php-fpm bash
+	docker exec -it esports_php_fpm bash
 
 shr: ## Console from root
-	docker exec -it -u root esports-php-fpm bash
+	docker exec -it -u root esports_php_fpm bash
 
 sh-n: ## Console
 	docker exec -it esports_nginx bash
