@@ -1,5 +1,4 @@
-# Настройка проекта
-Docker Symfony6.4
+# Настройка проекта API Esports
 
 ### 1. Установить docker & docker compose
 ### 2. Склонировать проект
