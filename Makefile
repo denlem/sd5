@@ -7,6 +7,9 @@ sh: ## Console
 shr: ## Console from root
 	docker exec -it -u root esports-php-fpm bash
 
+sh-n: ## Console
+	docker exec -it esports_nginx bash
+
 up: ## Console from root
 	docker compose up -d
 
