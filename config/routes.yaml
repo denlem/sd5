@@ -1,5 +1,25 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+api:
     type: attribute
+    resource: ../src/Api/
+
+### Public Api
+api_public_entity:
+    type: attribute
+    resource: ../src/Api/Entity
+    prefix: /api/entity
+
+api_public_component:
+    type: attribute
+    resource: ../src/Api/Component
+    prefix: /api/component
+
+api_public_page:
+    type: attribute
+    resource: ../src/Api/Page
+    prefix: /api/page
+
+#controllers:
+#    resource:
+#        path: ../src/Controller/
+#        namespace: App\Controller
+#    type: attribute

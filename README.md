@@ -1,21 +1,48 @@
-# Настройка проекта API Esports
+# Настройка проекта Esports API
 
 ### 1. Установить docker & docker compose
+
 ### 2. Склонировать проект
 
 ### 3. Сборка контейнеров
 
 `make build-nc`
 
-### 4. Запустить проект
+### 4. Запустить проект и проверить структуру контейнеров 
+
+#### 4.1 Запустить 
 
 `make up`
+
+#### 4.2 Проверить контейнеры
+
+`docker compose ps`
+
+Docker контейнеры которые должны развернуться:
+
+```
+esports_nginx
+esports_php_fpm
+esports_php_cli
+esports_percona
+esports_keydb 
+esports_cron
+esports_swagger
+```
 
 ### 5. Создать пустую БД
 
 Варианты:
-- через консоль в контейнере dev_myitcareer_percona
+- через консоль в контейнере esports_percona
 - через клиент, например встроенный в phpstorm
+
+```
+Доступы: 
+host: localhost
+port: 3306
+user: root
+password: example
+```
 
 `create database esports_dev`
 
@@ -38,6 +65,10 @@
 ### 8. Проверяем доступ к проекту из браузера
 
 http://api.esports.local:8081/
+
+### 9. Документация в Swagger
+
+http://localhost:8757/
 
 ### 9. Команды оболочки
 
@@ -67,6 +98,9 @@ http://api.esports.local:8081/
 
 #### Показать логи
 `make logs`
+
+#### перегенерировать swagger-файл документации 
+`make swagger-doc`
 
 
 

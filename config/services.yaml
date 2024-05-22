@@ -5,12 +5,18 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     kernel.debug: '%env(bool:DEBUG)%'
+    app.response_debug_mode: '%env(RESPONSE_DEBUG_MODE)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $responseDebugMode: '%app.response_debug_mode%'
+            $stratzApiUrl: '%env(STRATZ_API_URL)%'
+            $stratzApiToken: '%env(STRATZ_API_TOKEN)%'
+            $steamAccountId: '%env(STEAM_ACCOUNT_ID)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -23,3 +29,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Api\:
+        resource: '../src/Api'
+        tags: ['controller.service_arguments']
+
+    exception_json_responder:
+        class: App\Responder\ExceptionJsonResponder
+
+    App\Responder\ExceptionJsonResponder: '@exception_json_responder'

@@ -10,6 +10,9 @@ shr: ## Enter to php console from root
 sh-n: ## Enter to nginx console
 	docker exec -it esports_nginx bash
 
+sh-sw: ## Enter to swagger console
+	docker exec -it esports_swagger sh
+
 up: ## Start project
 	docker compose up -d
 
@@ -27,3 +30,6 @@ build-nc bnc: ## Build project with no-cache
 
 logs: ## Show live logs
 	@$(DOCKER_COMP) logs --tail=0 --follow
+
+swagger-doc:
+	docker exec esports_php_fpm ./vendor/bin/openapi -o config/docker/swagger/apidoc.json src/Api/

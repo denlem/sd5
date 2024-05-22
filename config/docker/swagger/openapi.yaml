@@ -1,0 +1,11 @@
+openapi: 3.0.0
+info:
+  title: 'My First API'
+  version: '0.1'
+paths:
+  /api/homepage:
+    get:
+      operationId: 5da518a264bff6aa54dd50a3c6f2ad4d
+      responses:
+        '200':
+          description: 'The data'

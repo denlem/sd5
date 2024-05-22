@@ -22,6 +22,13 @@ RUN apt-get update;  \
 # Устанавливаем расширения PHP, необходимые для Symfony
 RUN docker-php-ext-install intl zip pdo pdo_mysql iconv mbstring sockets
 
+# and more extensions;
+RUN yes '' | pecl install igbinary apcu apcu_bc; \
+    docker-php-ext-enable igbinary.so apcu.so; \
+    echo "extension=apcu.so" >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini; \
+    echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20230831/opcache.so" \
+        > /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini;
+
 # Создание пользователя с UID=1000
 RUN useradd -r -u 1000 -g www-data appuser
 

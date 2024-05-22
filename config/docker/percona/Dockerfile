@@ -2,6 +2,8 @@ FROM percona/percona-xtradb-cluster:8.0
 #FROM percona/percona-xtradb-cluster
 #FROM percona/percona-server:8.0
 
+#ENV MYSQL_ROOT_PASSWORD=testpass
+
 USER root
 #
 #RUN touch /var/log/mysql/mysql.err; \

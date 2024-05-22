@@ -29,7 +29,7 @@ services:
     volumes:
       - ./:/var/www/symfony:rw
       - ./config/docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
-      - ./config/docker/php-fpm/php.override.ini:/usr/local/etc/php/php.override.ini
+      - ./config/docker/php-fpm/php.override.ini:/usr/local/etc/php/conf.d/php.override.ini
     networks:
       - esports_network
     depends_on:
@@ -37,7 +37,7 @@ services:
 
   php-cli:
     container_name: ${PROJECT_NAME}_php_cli
-    hostname: "${PROJECT_NAME}_php_fpm"
+    hostname: "${PROJECT_NAME}_php_cli"
     shm_size: '2gb'
     restart: ${CONTAINER_RESTART}
     build:
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./:/var/www/symfony:rw
       - ./config/docker/php-cli/php.ini:/usr/local/etc/php/php.ini
-      - ./config/docker/php-cli/php.override.ini:/usr/local/etc/php/php.override.ini
+      - ./config/docker/php-cli/php.override.ini:/usr/local/etc/php/conf.d/php.override.ini
     networks:
       - esports_network
     depends_on:
@@ -79,7 +79,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - db_esports_percona_v8:/var/lib/mysql
+      - db_esports_percona_v_8_0:/var/lib/mysql
     networks:
       - esports_network
 
@@ -93,11 +93,24 @@ services:
     networks:
       - esports_network
 
+  swagger:
+    container_name: "${PROJECT_NAME}_swagger"
+    restart: ${CONTAINER_RESTART}
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8757:8080"
+    volumes:
+      - ./config/docker/swagger/apidoc.json:/schema/apidoc.json
+    environment:
+      SWAGGER_JSON: /schema/apidoc.json
+    depends_on:
+      - php-fpm
+
 networks:
   esports_network:
     driver: bridge
 
 volumes:
-  db_esports_percona_v8:
+  db_esports_percona_v_8_0:
   data:
     driver: local

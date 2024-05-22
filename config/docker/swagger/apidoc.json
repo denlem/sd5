@@ -1,0 +1,55 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Demo API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://apidemo.ddns.net:8081",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+        "/api/component/leagues": {
+            "get": {
+                "operationId": "30ddf629216d8cbac506e0e8c57e8660",
+                "responses": {
+                    "200": {
+                        "description": "Leagues data"
+                    }
+                }
+            }
+        },
+        "/api/component/match/7710066098": {
+            "get": {
+                "operationId": "4fc563e29c068cdc055937e6755cf75f",
+                "responses": {
+                    "200": {
+                        "description": "Match data"
+                    }
+                }
+            }
+        },
+        "/api/component/player/25907144": {
+            "get": {
+                "operationId": "fc110ab3ec00cbd0c40c71d7afdc279a",
+                "responses": {
+                    "200": {
+                        "description": "Player data"
+                    }
+                }
+            }
+        },
+        "/api/component/team/9247354": {
+            "get": {
+                "operationId": "1e7766e64fc5102c7edfa0f9f1d502b8",
+                "responses": {
+                    "200": {
+                        "description": "Team data"
+                    }
+                }
+            }
+        }
+    }
+}
